@@ -1,7 +1,69 @@
 // Este arquivo contém o código JavaScript que gerencia a lógica da aplicação.
 
-// #region Cadastro de Produto
-// Lista de produtos permitidos para cadastro
+// =======================
+// #region CONTROLE DE ABAS
+// =======================
+
+/**
+ * Alterna entre as abas da interface, salva a aba ativa no localStorage
+ * e atualiza a URL para permitir navegação via botão voltar/avançar.
+ * @param {string} tabId - O ID da aba a ser exibida.
+ */
+function showTab(tabId) {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    // Remove a classe "active" de todas as abas e conteúdos
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabContents.forEach(content => content.classList.remove('active'));
+
+    // Adiciona a classe "active" na aba e no conteúdo correspondente
+    const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    const activeContent = document.getElementById(tabId);
+
+    if (activeButton && activeContent) {
+        activeButton.classList.add('active');
+        activeContent.classList.add('active');
+        // Atualiza a URL sem recarregar a página
+        history.pushState(null, '', `#${tabId}`);
+        // Salva aba ativa no localStorage
+        localStorage.setItem('abaAtiva', tabId);
+    }
+}
+
+/**
+ * Inicializa o controle de abas ao carregar a página.
+ * Restaura a aba ativa do localStorage ou usa a padrão.
+ */
+function inicializarAbas() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    // Adiciona eventos de clique nos botões das abas
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            showTab(tabId);
+        });
+    });
+
+    // Verifica a URL ao carregar a página
+    const initialTab = window.location.hash.replace('#', '') || localStorage.getItem('abaAtiva') || 'cadastrar-produto';
+    showTab(initialTab);
+
+    // Lida com o botão "voltar" do navegador
+    window.addEventListener('popstate', () => {
+        const currentTab = window.location.hash.replace('#', '') || 'cadastrar-produto';
+        showTab(currentTab);
+    });
+}
+// #endregion
+
+// =======================
+// #region CADASTRO DE PRODUTO
+// =======================
+
+/**
+ * Lista de produtos permitidos para cadastro.
+ */
 const produtosPermitidos = [
     'Arroz', 'Feijão', 'Óleo', 'Açúcar', 'Café moído', 'Sal', 
     'Extrato de tomate', 'Vinagre', 'Bolacha recheada', 'Bolacha salgada', 
@@ -10,164 +72,318 @@ const produtosPermitidos = [
     'Goiabada', 'Suco em pó', 'Mistura para bolo', 'Tempero', 'Sardinha', 
     'Creme dental', 'Papel higiênico', 'Sabonete', 'Milharina'
 ];
-// #endregion
 
-// #region Controle de Abas
-document.addEventListener('DOMContentLoaded', () => {
-    // Seleciona os botões das abas e os conteúdos correspondentes
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
+/**
+ * Inicializa o formulário de cadastro de produto, incluindo formatação do campo de preço.
+ */
+function inicializarCadastroProduto() {
     const campoPreco = document.getElementById('produto-preco');
+    if (!campoPreco) return;
 
     // Formatar preço enquanto o usuário digita
     campoPreco.addEventListener('input', (e) => {
-        const apenasNumeros = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-        const valorFloat = (parseInt(apenasNumeros, 10) / 100).toFixed(2).replace('.', ','); // Formata como moeda
-        e.target.value = `R$ ${valorFloat}`; // Atualiza o campo com o valor formatado
+        const apenasNumeros = e.target.value.replace(/\D/g, '');
+        const valorFloat = (parseInt(apenasNumeros, 10) / 100).toFixed(2).replace('.', ',');
+        e.target.value = `R$ ${valorFloat}`;
     });
 
-    // Garantir valor padrão ao perder o foco
+    // Valor padrão ao perder o foco
     campoPreco.addEventListener('blur', () => {
         if (!campoPreco.value || campoPreco.value === 'R$ ') {
-            campoPreco.value = 'R$ 0,00'; // Define o valor padrão
+            campoPreco.value = 'R$ 0,00';
         }
     });
 
-    // Função para alternar entre as abas
-    function showTab(tabId) {
-        // Remove a classe "active" de todas as abas e conteúdos
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        tabContents.forEach(content => content.classList.remove('active'));
-
-        // Adiciona a classe "active" na aba e no conteúdo correspondente
-        const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-        const activeContent = document.getElementById(tabId);
-
-        if (activeButton && activeContent) {
-            activeButton.classList.add('active');
-            activeContent.classList.add('active');
-
-            // Atualiza a URL sem recarregar a página
-            history.pushState(null, '', `#${tabId}`);
+    // Configura a data de hoje no campo de data de compra
+    const campoDataCompra = document.getElementById('produto-data-compra');
+    function setarDataHoje() {
+        if (campoDataCompra) {
+            const hoje = new Date();
+            const yyyy = hoje.getFullYear();
+            const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dd = String(hoje.getDate()).padStart(2, '0');
+            const dataHoje = `${yyyy}-${mm}-${dd}`;
+            campoDataCompra.value = dataHoje;
+            campoDataCompra.max = dataHoje; // Impede datas futuras
         }
     }
+    setarDataHoje();
 
-    // Adiciona eventos de clique nos botões das abas
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const tabId = button.getAttribute('data-tab'); // Obtém o ID da aba
-            showTab(tabId); // Mostra a aba correspondente
-        });
-    });
+    const form = document.getElementById('cadastrar-produto-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-    // Verifica a URL ao carregar a página
-    const initialTab = window.location.hash.replace('#', '') || 'cadastrar-produto';
-    showTab(initialTab);
+            const nome = document.getElementById('produto-nome').value;
+            const quantidade = document.getElementById('produto-quantidade').value;
+            const dataCompra = document.getElementById('produto-data-compra').value;
+            const dataValidade = document.getElementById('produto-data-validade').value;
+            let preco = document.getElementById('produto-preco').value.replace('R$', '').replace(',', '.').trim();
 
-    // Lida com o botão "voltar" do navegador
-    window.addEventListener('popstate', () => {
-        const currentTab = window.location.hash.replace('#', '') || 'cadastrar-produto';
-        showTab(currentTab);
-    });
+            const hoje = new Date();
+            const dataCompraObj = new Date(dataCompra);
+            if (dataCompraObj > hoje) {
+                alert('A data de compra não pode ser maior que o dia atual!');
+                return;
+            }
 
-    // #region Visualizar Estoque
-    // Função para buscar e exibir os produtos no estoque
-    function visualizarEstoque() {
-        fetch('/api/estoque') // Faz uma requisição GET para a rota do estoque
+            if (!nome || !quantidade || !dataCompra || !dataValidade || !preco) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+
+            // Validação para impedir preço zero
+            if (Number(preco) <= 0) {
+                alert('O valor do produto deve ser maior que zero!');
+                return;
+            }
+
+            fetch('/api/produtos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, quantidade, dataCompra, dataValidade, preco })
+            })
             .then(response => response.json())
             .then(data => {
-                const tabelaBody = document.querySelector('#estoque-tabela tbody'); // Seleciona o corpo da tabela
-                tabelaBody.innerHTML = ''; // Limpa a tabela antes de preenchê-la
-
-                // Itera sobre os produtos retornados e cria as linhas da tabela
-                data.forEach(produto => {
-                    const row = document.createElement('tr'); // Cria uma nova linha para a tabela
-
-                    // Adiciona a classe "expirando" para itens próximos do vencimento
-                    if (produto.expirando) {
-                        row.classList.add('expirando'); // Classe para estilizar produtos próximos do vencimento
-                    }
-
-                    // Preenche as colunas da tabela com os dados do produto
-                    row.innerHTML = `
-                        <td>${produto.codigo}</td> <!-- Código do produto -->
-                        <td>${produto.nome}</td> <!-- Nome do produto -->
-                        <td>${produto.quantidade}</td> <!-- Quantidade disponível -->
-                        <td>${produto.data_compra}</td> <!-- Data de compra -->
-                        <td>${produto.data_validade}</td> <!-- Data de validade -->
-                        <td>R$ ${produto.preco}</td> <!-- Preço formatado -->
-                    `;
-
-                    tabelaBody.appendChild(row); // Adiciona a linha à tabela
-                });
-            })
-            .catch(error => console.error('Erro ao visualizar estoque:', error)); // Exibe erros no console
-    }
-
-    // Chama a função para exibir o estoque ao carregar a página
-    visualizarEstoque();
-    // #endregion
-
-    // #region Montar Cesta
-    // Captura o envio do formulário de montar cesta
-    document.getElementById('montar-cesta-form').addEventListener('submit', (e) => {
-        e.preventDefault(); // Impede o comportamento padrão do formulário
-
-        // Obtém o tipo de cesta selecionado
-        const tipo = document.querySelector('input[name="tipo-cesta"]:checked').value;
-
-        // Chama a função para montar a cesta
-        montarCesta(tipo);
-    });
-
-    // Função para montar cesta
-    function montarCesta(tipo) {
-        fetch('/api/cestas', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ tipo }) // Envia o tipo de cesta para o backend
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (response.ok) {
-                console.log(`Cesta montada com sucesso: ${data.message}`);
-                alert(data.message || 'Cesta montada com sucesso!');
-            } else {
-                console.warn(`Erro ao montar a cesta: ${data.message}`);
-                if (data.missingItems) {
-                    alert(`Não é possível montar a cesta. Os seguintes itens estão faltando ou com quantidade insuficiente:\n\n${data.missingItems.join('\n')}`);
+                if (data.error) {
+                    alert('Erro ao cadastrar produto: ' + data.error);
                 } else {
-                    alert(data.message || 'Erro ao montar a cesta.');
+                    alert('Produto cadastrado com sucesso!');
+                    form.reset();
+                    setarDataHoje(); // <-- Aqui garante que a data de compra volta para hoje
+                    visualizarEstoque(); // Atualiza a tabela de estoque automaticamente
                 }
+            })
+            .catch(error => {
+                alert('Erro ao cadastrar produto!');
+                console.error(error);
+            });
+        });
+    }
+}
+// #endregion
+
+// =======================
+// #region MONTAR CESTA
+// =======================
+
+/**
+ * Envia o tipo de cesta para o servidor, exibe o resultado e mantém a aba ativa.
+ * @param {string} tipo - Tipo da cesta ('pequena' ou 'grande').
+ */
+function montarCesta(tipo) {
+    fetch('/api/cestas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.missingItems) {
+            alert(`Itens faltando: ${data.missingItems.join(', ')}`);
+            // Exibe na tela também
+            const resultado = document.getElementById('resultado-montagem');
+            resultado.innerHTML = `
+                <div style="color: red; font-weight: bold;">
+                    Não é possível montar a cesta.<br>
+                    Itens faltando:<br>
+                    <ul>
+                        ${data.missingItems.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        } else {
+            alert(data.message || 'Cesta montada com sucesso!');
+            // Exibe o link em um campo específico
+            const resultado = document.getElementById('resultado-montagem');
+            resultado.innerHTML = `
+                <p>Cesta criada! Clique para visualizar os itens ou gerar o arquivo:</p>
+                <button id="ver-cesta" data-cesta="${data.id_cesta}">Ver detalhes da cesta</button>
+            `;
+            document.getElementById('ver-cesta').onclick = function() {
+                mostrarDetalhesCesta(data.id_cesta);
+            };
+            // Mantém a aba de montagem ativa
+            showTab('montar-cesta');
+            visualizarEstoque(); // Atualiza a tabela de estoque automaticamente
+            acessarHistorico();  // Atualiza o histórico automaticamente
+        }
+    })
+    .catch(error => console.error('Erro ao montar cesta:', error));
+}
+
+/**
+ * Inicializa o formulário de montagem de cesta.
+ */
+function inicializarMontarCesta() {
+    const montarCestaForm = document.getElementById('montar-cesta-form');
+    if (montarCestaForm) {
+        montarCestaForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const tipo = document.querySelector('input[name="tipo-cesta"]:checked')?.value;
+            if (!tipo) {
+                alert('Selecione o tipo de cesta!');
+                return;
+            }
+            montarCesta(tipo);
+        });
+    }
+}
+
+/**
+ * Busca e exibe os detalhes dos itens de uma cesta montada.
+ * @param {number} idCesta - ID da cesta.
+ */
+function mostrarDetalhesCesta(idCesta) {
+    fetch(`/api/cestas/${idCesta}/itens`)
+        .then(response => response.json())
+        .then(itens => {
+            const resultado = document.getElementById('resultado-montagem');
+            if (!itens.length) {
+                resultado.innerHTML = '<p>Nenhum item encontrado para esta cesta.</p>';
+                return;
+            }
+            let tabela = `
+                <table>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Preço Unitário</th>
+                        <th>Código</th>
+                    </tr>
+            `;
+            itens.forEach(item => {
+                tabela += `
+                    <tr>
+                        <td>${item.nome}</td>
+                        <td>${item.quantidade}</td>
+                        <td>R$ ${parseFloat(item.preco_unitario).toFixed(2).replace('.', ',')}</td>
+                        <td>${item.codigo_produto}</td>
+                    </tr>
+                `;
+            });
+            tabela += '</table>';
+            tabela += `<button onclick="baixarTxtCesta(${idCesta})">Gerar TXT da cesta</button>`;
+            resultado.innerHTML = tabela;
+        })
+        .catch(error => console.error('Erro ao buscar itens da cesta:', error));
+}
+
+/**
+ * Gera e baixa o arquivo TXT da cesta consultando o backend.
+ * @param {number} idCesta - ID da cesta.
+ */
+function baixarTxtCesta(idCesta) {
+    // Busca o nome do arquivo da cesta pelo id
+    fetch(`/api/historico`)
+        .then(response => response.json())
+        .then(agrupado => {
+            let nomeArquivo = null;
+            Object.values(agrupado).forEach(lista => {
+                lista.forEach(cesta => {
+                    if (cesta.id === idCesta) {
+                        nomeArquivo = cesta.nome_arquivo;
+                    }
+                });
+            });
+            if (nomeArquivo) {
+                window.open(`/historico/${nomeArquivo}`, '_blank');
+            } else {
+                alert('Arquivo não encontrado para esta cesta.');
             }
         })
-        .catch(error => console.error('Erro ao montar cesta:', error)); // Exibe erros no console
-    }
-    // #endregion
+        .catch(() => alert('Erro ao localizar o arquivo da cesta.'));
+}
+// #endregion
 
-    // #region Histórico de Cestas
-    // Função para acessar o histórico de cestas montadas
-    function acessarHistorico() {
-        fetch('/api/historico') // Faz uma requisição GET para a rota do histórico
+// =======================
+// #region VISUALIZAR ESTOQUE
+// =======================
+
+/**
+ * Busca e exibe os produtos no estoque na tabela da interface.
+ */
+function visualizarEstoque() {
+    fetch('/api/estoque')
         .then(response => response.json())
         .then(data => {
-            const lista = document.getElementById('historico-lista'); // Seleciona a lista do histórico
-            lista.innerHTML = ''; // Limpa a lista antes de preenchê-la
-
-            // Itera sobre as cestas retornadas e cria os itens da lista
-            data.forEach(cesta => {
-                const item = document.createElement('li');
-                item.innerHTML = `
-                    <a href="/historico/${cesta.nome_arquivo}" download>${cesta.nome_arquivo}</a>
-                    - Data: ${cesta.data_montagem}
-                    - Preço Total: R$ ${cesta.preco_total.toFixed(2)}
+            const tabelaBody = document.querySelector('#estoque-tabela tbody');
+            if (!tabelaBody) return;
+            tabelaBody.innerHTML = '';
+            data.forEach(produto => {
+                const row = document.createElement('tr');
+                if (produto.expirando) row.classList.add('expirando');
+                row.innerHTML = `
+                    <td>${produto.codigo}</td>
+                    <td>${produto.nome}</td>
+                    <td>${produto.quantidade}</td>
+                    <td>${produto.data_compra}</td>
+                    <td>${produto.data_validade}</td>
+                    <td>R$ ${produto.preco}</td>
                 `;
-                lista.appendChild(item); // Adiciona o item à lista
+                tabelaBody.appendChild(row);
             });
         })
-        .catch(error => console.error('Erro ao acessar histórico:', error)); // Exibe erros no console
-    }
-    // #endregion
+        .catch(error => console.error('Erro ao visualizar estoque:', error));
+}
+// #endregion
+
+// =======================
+// #region HISTÓRICO DE CESTAS
+// =======================
+
+/**
+ * Busca e exibe o histórico de cestas montadas agrupadas por mês/ano.
+ */
+function acessarHistorico() {
+    fetch('/api/historico')
+        .then(response => response.json())
+        .then(agrupado => {
+            const lista = document.getElementById('historico-lista');
+            if (!lista) return;
+            lista.innerHTML = '';
+            Object.keys(agrupado).forEach(mesAno => {
+                const titulo = document.createElement('h3');
+                titulo.textContent = `Mês: ${mesAno}`;
+                lista.appendChild(titulo);
+                const tabela = document.createElement('table');
+                tabela.innerHTML = `
+                    <tr>
+                        <th>Arquivo</th>
+                        <th>Tipo</th>
+                        <th>Data</th>
+                        <th>Valor</th>
+                    </tr>
+                `;
+                agrupado[mesAno].forEach(cesta => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><a href="/historico/${cesta.nome_arquivo}" download>${cesta.nome_arquivo}</a></td>
+                        <td>${cesta.tipo || '-'}</td>
+                        <td>${new Date(cesta.data_montagem).toLocaleString('pt-BR')}</td>
+                        <td>R$ ${parseFloat(cesta.preco_total).toFixed(2).replace('.', ',')}</td>
+                    `;
+                    tabela.appendChild(tr);
+                });
+                lista.appendChild(tabela);
+            });
+        })
+        .catch(error => console.error('Erro ao acessar histórico:', error));
+}
+// #endregion
+
+// =======================
+// #region INICIALIZAÇÃO GLOBAL
+// =======================
+
+/**
+ * Inicializa todas as funcionalidades ao carregar a página.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarAbas();
+    inicializarCadastroProduto();
+    inicializarMontarCesta();
+    visualizarEstoque();
+    acessarHistorico();
 });
+// #endregion

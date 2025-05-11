@@ -1,0 +1,21 @@
+Nome: Arroz, Quantidade: 1, Preço Unitário: R$ 20.00, Código: Arroz-2025-05-11-2025-05-29-20
+Nome: Feijão, Quantidade: 1, Preço Unitário: R$ 32.11, Código: Fv3105c1105vr32,11
+Nome: Óleo, Quantidade: 1, Preço Unitário: R$ 3.33, Código: Óv2607c1105vr3,33
+Nome: Açúcar, Quantidade: 1, Preço Unitário: R$ 51.00, Código: Av0706c1105vr51,00
+Nome: Café moído, Quantidade: 1, Preço Unitário: R$ 33.33, Código: Cv0706c1105vr33,33
+Nome: Sal, Quantidade: 1, Preço Unitário: R$ 12.01, Código: Sv0908c1105vr12,01
+Nome: Extrato de tomate, Quantidade: 1, Preço Unitário: R$ 22.00, Código: Ev0706c1105vr22,00
+Nome: Bolacha recheada, Quantidade: 1, Preço Unitário: R$ 23.00, Código: Bv2507c1105vr23,00
+Nome: Macarrão Espaguete, Quantidade: 1, Preço Unitário: R$ 33.00, Código: Mv0908c1105vr33,00
+Nome: Farinha de trigo, Quantidade: 1, Preço Unitário: R$ 3.00, Código: Farinha de trigo-2025-05-11-2025-05-30-3
+Nome: Farinha temperada, Quantidade: 1, Preço Unitário: R$ 33.33, Código: Fv0208c1105vr33,33
+Nome: Goiabada, Quantidade: 1, Preço Unitário: R$ 33.33, Código: Gv2507c1105vr33,33
+Nome: Suco em pó, Quantidade: 1, Preço Unitário: R$ 33.66, Código: Sv3007c1105vr33,66
+Nome: Sardinha, Quantidade: 1, Preço Unitário: R$ 23.00, Código: Sv2006c1105vr23,00
+Nome: Creme dental, Quantidade: 1, Preço Unitário: R$ 3.64, Código: Cv1907c1105vr3,64
+Nome: Papel higiênico, Quantidade: 1, Preço Unitário: R$ 12.05, Código: Pv0706c1105vr12,05
+Nome: Sabonete, Quantidade: 1, Preço Unitário: R$ 90.10, Código: Sv1009c1105vr90,10
+Nome: Milharina, Quantidade: 1, Preço Unitário: R$ 9.80, Código: Mv0506c1105vr9,80
+Nome: Tempero, Quantidade: 1, Preço Unitário: R$ 9.51, Código: Tv3005c1105vr9,51
+
+Valor Total: R$ 481.20

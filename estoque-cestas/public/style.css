@@ -1,22 +1,12 @@
+/* =======================
+   #region GERAL
+   ======================= */
+/* Estilos gerais da página */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
     background-color: #f4f4f4;
-}
-
-#estoque-lista {
-    list-style-type: none;
-    padding: 0;
-}
-
-#estoque-lista li {
-    background-color: #fff;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    font-size: 16px;
 }
 
 h1 {
@@ -33,30 +23,104 @@ input, select, button {
     padding: 8px;
     font-size: 14px;
 }
+/* #endregion */
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+/* =======================
+   #region CONTROLE DE ABAS
+   ======================= */
+/* Estilo do container das abas */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+/* Botões das abas */
+.tab-button {
+    padding: 10px 20px;
     cursor: pointer;
+    border: none;
+    background: #f1f1f1;
+    margin-right: 5px;
 }
 
-button:hover {
-    background-color: #45a049;
+/* Aba ativa */
+.tab-button.active {
+    background: #fff;
+    border-bottom: 2px solid #007BFF;
+    font-weight: bold;
 }
 
-#produtos-lista {
-    list-style-type: none;
-    padding: 0;
-}
-
-#produtos-lista li {
+/* Conteúdo das abas */
+.tab-content {
+    display: none;
+    padding: 20px;
     background-color: #fff;
-    padding: 10px;
-    margin: 5px 0;
     border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
+/* Conteúdo da aba ativa */
+.tab-content.active {
+    display: block;
+}
+/* #endregion */
+
+/* =======================
+   #region CADASTRO DE PRODUTO
+   ======================= */
+/* Estilo do campo de preço do produto */
+#produto-preco {
+    width: 150px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: right;
+    direction: rtl;
+    padding-right: 25px;
+}
+/* #endregion */
+
+/* =======================
+   #region MONTAR CESTA
+   ======================= */
+/* (Adicione estilos específicos para montar cesta aqui, se necessário) */
+/* #endregion */
+
+/* =======================
+   #region VISUALIZAR ESTOQUE
+   ======================= */
+/* Estilo para a tabela de estoque */
+#estoque-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+#estoque-tabela th, #estoque-tabela td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#estoque-tabela th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Estilo para destacar produtos próximos do vencimento */
+.expirando {
+    color: red;
+    font-weight: bold;
+}
+/* #endregion */
+
+/* =======================
+   #region HISTÓRICO DE CESTAS
+   ======================= */
 #historico-cestas {
     margin-top: 20px;
 }
@@ -76,55 +140,6 @@ button:hover {
     text-align: left;
 }
 
-.expirando {
-    color: red; /* Texto vermelho */
-    font-weight: bold; /* Texto em negrito */
-}
-
-.tabs {
-    display: flex;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 20px;
-}
-
-.tab-button {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    background: #f1f1f1;
-    margin-right: 5px;
-}
-
-.tab-button.active {
-    background: #fff;
-    border-bottom: 2px solid #007BFF;
-    font-weight: bold;
-}
-
-.tab-content {
-    display: none;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-#produto-preco {
-    width: 150px; /* Define uma largura fixa */
-    padding: 5px; /* Ajusta o espaçamento interno */
-    font-size: 16px; /* Define o tamanho da fonte */
-    border: 1px solid #ccc; /* Define a borda */
-    border-radius: 5px; /* Adiciona bordas arredondadas */
-    box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-    text-align: right; /* Alinha o texto à direita */
-    direction: rtl; /* Alinha números à direita mantendo o R$ à esquerda */
-    padding-right: 25px; /* Espaço para o símbolo */
-}
-
 /* Estilo para os links de download no histórico */
 #historico-lista a {
     text-decoration: none;
@@ -141,22 +156,47 @@ button:hover {
     margin-bottom: 10px;
     font-size: 16px;
 }
+/* #endregion */
 
-/* Estilo para a tabela de estoque */
-#estoque-tabela {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+/* =======================
+   #region BOTÕES
+   ======================= */
+/* Estilo geral dos botões */
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+/* Efeito hover nos botões */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Botão de submit com cor fixa */
+button[type="submit"] {
+    background-color: #007BFF !important;
+    color: white !important;
+}
+/* #endregion */
+
+/* =======================
+   #region LISTAS DE PRODUTOS (opcional)
+   ======================= */
+#produtos-lista, #estoque-lista {
+    list-style-type: none;
+    padding: 0;
+}
+
+#produtos-lista li, #estoque-lista li {
+    background-color: #fff;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
     font-size: 16px;
 }
-
-#estoque-tabela th, #estoque-tabela td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-#estoque-tabela th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
+/* #endregion */

@@ -1,0 +1,24 @@
+Nome                       Qtd    Preço Unit.                   Código
+----------------------------------------------------------------------
+Arroz                        1       R$ 20.00Arroz-2025-05-11-2025-05-29-20
+Feijão                       1       R$ 32.11       Fv3105c1105vr32,11
+Óleo                         1        R$ 3.33        Óv2607c1105vr3,33
+Açúcar                       1       R$ 51.00       Av0706c1105vr51,00
+Café moído                   1        R$ 3.00        Cv0706c1105vr3,00
+Sal                          1       R$ 12.01       Sv0908c1105vr12,01
+Extrato de tomate            1       R$ 22.00       Ev0706c1105vr22,00
+Bolacha recheada             1       R$ 23.00       Bv2507c1105vr23,00
+Macarrão Espaguete           1       R$ 33.00       Mv0908c1105vr33,00
+Farinha de trigo             1        R$ 3.33        Fv3105c1105vr3,33
+Farinha temperada            1       R$ 33.33       Fv0208c1105vr33,33
+Goiabada                     1       R$ 33.33       Gv2507c1105vr33,33
+Suco em pó                   1       R$ 33.66       Sv3007c1105vr33,66
+Sardinha                     1       R$ 23.00       Sv2006c1105vr23,00
+Creme dental                 1        R$ 3.64        Cv1907c1105vr3,64
+Papel higiênico              1       R$ 12.05       Pv0706c1105vr12,05
+Sabonete                     1       R$ 90.10       Sv1009c1105vr90,10
+Milharina                    1        R$ 9.80        Mv0506c1105vr9,80
+Tempero                      1        R$ 9.51        Tv3005c1105vr9,51
+
+----------------------------------------------------------------------
+Valor Total: R$ 451.20
