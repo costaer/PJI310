@@ -60,14 +60,13 @@ router.post('/cestas', (req, res) => {
 
     // Valida o tipo de cesta
     if (!tipo || (tipo !== 'pequena' && tipo !== 'grande')) {
-        console.error('Erro: Tipo de cesta inválido.');
         return res.status(400).json({ message: 'Tipo de cesta inválido!' });
     }
 
     // Define os itens necessários para cada tipo de cesta
     const itensNecessarios = tipo === 'pequena'
-        ? ['Arroz', 'Feijão', 'Óleo', 'Açúcar', 'Sal']
-        : ['Arroz', 'Feijão', 'Óleo', 'Açúcar', 'Sal', 'Café moído', 'Macarrão Espaguete'];
+        ? ['Arroz', 'Feijão', 'Óleo', 'Açúcar', 'Café moído', 'Sal', 'Extrato de tomate', 'Bolacha recheada', 'Macarrão Espaguete', 'Farinha de trigo', 'Farinha temperada', 'Goiabada', 'Suco em pó', 'Sardinha', 'Creme dental', 'Papel higiênico', 'Sabonete', 'Milharina', 'Tempero']
+        : ['Arroz', 'Feijão', 'Óleo', 'Açúcar', 'Café moído', 'Sal', 'Extrato de tomate', 'Vinagre', 'Bolacha recheada', 'Bolacha salgada', 'Macarrão Espaguete', 'Macarrão parafuso', 'Macarrão instantâneo', 'Farinha de trigo', 'Farinha temperada', 'Achocolatado em pó', 'Leite', 'Goiabada', 'Suco em pó', 'Mistura para bolo', 'Tempero', 'Sardinha', 'Creme dental', 'Papel higiênico', 'Sabonete'];
 
     // SQL para buscar os produtos necessários no estoque
     const sql = `
@@ -77,7 +76,6 @@ router.post('/cestas', (req, res) => {
         ORDER BY julianday(data_validade) ASC
     `;
 
-    // Executa a consulta no banco de dados
     db.all(sql, itensNecessarios, (err, rows) => {
         if (err) {
             console.error('Erro ao verificar estoque:', err.message);
@@ -85,28 +83,62 @@ router.post('/cestas', (req, res) => {
         }
 
         const produtosSelecionados = [];
+        const itensFaltantes = [];
         let precoTotal = 0;
 
-        // Monta a cesta com base nos itens disponíveis no estoque
+        // Verifica se todos os itens necessários estão disponíveis no estoque
         itensNecessarios.forEach(item => {
             let quantidadeRestante = 1; // Precisamos de 1 unidade de cada item
-            rows.forEach(produto => {
-                if (produto.nome === item && quantidadeRestante > 0) {
-                    const usado = Math.min(produto.quantidade, quantidadeRestante);
-                    produtosSelecionados.push({ ...produto, usado });
-                    quantidadeRestante -= usado;
-                    precoTotal += usado * produto.preco;
-                }
+            const produtos = rows.filter(produto => produto.nome === item);
+
+            if (produtos.length === 0 || produtos.reduce((acc, p) => acc + p.quantidade, 0) < quantidadeRestante) {
+                itensFaltantes.push(item); // Adiciona o item à lista de faltantes
+            } else {
+                produtos.forEach(produto => {
+                    if (quantidadeRestante > 0) {
+                        const usado = Math.min(produto.quantidade, quantidadeRestante);
+                        produtosSelecionados.push({ ...produto, usado });
+                        quantidadeRestante -= usado;
+                        precoTotal += usado * produto.preco;
+                    }
+                });
+            }
+        });
+
+        if (itensFaltantes.length > 0) {
+            return res.status(400).json({
+                message: 'Não é possível montar a cesta. Alguns itens estão faltando.',
+                missingItems: itensFaltantes
+            });
+        }
+
+        // Atualiza o estoque no banco de dados
+        const updatePromises = produtosSelecionados.map(produto => {
+            return new Promise((resolve, reject) => {
+                const novaQuantidade = produto.quantidade - produto.usado;
+                db.run(
+                    `UPDATE produtos SET quantidade = ? WHERE id = ?`,
+                    [novaQuantidade, produto.id],
+                    (err) => {
+                        if (err) reject(err);
+                        else resolve();
+                    }
+                );
             });
         });
 
-        // Gera o conteúdo do arquivo da cesta
-        const conteudoArquivo = produtosSelecionados.map(produto =>
-            `${produto.nome} - Código: ${produto.codigo} - Preço: R$ ${formatarPreco(produto.preco)}`
-        ).join('\n') + `\n\nPreço Total: R$ ${formatarPreco(precoTotal)}`;
-
-        console.log(`Cesta montada com sucesso!`);
-        res.status(200).json({ message: `Cesta do tipo "${tipo}" montada com sucesso!` });
+        Promise.all(updatePromises)
+            .then(() => {
+                res.status(200).json({
+                    message: `Cesta do tipo "${tipo}" montada com sucesso!`,
+                    totalPrice: precoTotal.toFixed(2),
+                    items: produtosSelecionados
+                });
+            })
+            .catch(err => {
+                console.error('Erro ao atualizar estoque:', err.message);
+                res.status(500).json({ message: 'Erro ao atualizar estoque.' });
+            });
     });
 });
 

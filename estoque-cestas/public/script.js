@@ -112,16 +112,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Captura o envio do formulário de montar cesta
     document.getElementById('montar-cesta-form').addEventListener('submit', (e) => {
         e.preventDefault(); // Impede o comportamento padrão do formulário
-        const tipo = document.querySelector('input[name="tipo-cesta"]:checked').value; // Obtém o tipo de cesta selecionado
-        montarCesta(tipo); // Chama a função para montar a cesta
 
-        // Mantém a aba "Montar Cesta" ativa
-        showTab('montar-cesta');
+        // Obtém o tipo de cesta selecionado
+        const tipo = document.querySelector('input[name="tipo-cesta"]:checked').value;
+
+        // Chama a função para montar a cesta
+        montarCesta(tipo);
     });
 
     // Função para montar cesta
     function montarCesta(tipo) {
-        fetch('/cestas', {
+        fetch('/api/cestas', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
