@@ -1,0 +1,16 @@
+{
+  "name": "estoque-cestas",
+  "version": "1.0.0",
+  "description": "Aplicação web para controle de estoque de cestas básicas.",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.2"
+  },
+  "author": "",
+  "license": "ISC"
+}

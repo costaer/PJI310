@@ -1,0 +1,162 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+#estoque-lista {
+    list-style-type: none;
+    padding: 0;
+}
+
+#estoque-lista li {
+    background-color: #fff;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+form {
+    margin: 20px 0;
+}
+
+input, select, button {
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 14px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#produtos-lista {
+    list-style-type: none;
+    padding: 0;
+}
+
+#produtos-lista li {
+    background-color: #fff;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+}
+
+#historico-cestas {
+    margin-top: 20px;
+}
+
+#historico-cestas table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#historico-cestas th, #historico-cestas td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#historico-cestas th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+.expirando {
+    color: red; /* Texto vermelho */
+    font-weight: bold; /* Texto em negrito */
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    background: #f1f1f1;
+    margin-right: 5px;
+}
+
+.tab-button.active {
+    background: #fff;
+    border-bottom: 2px solid #007BFF;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+#produto-preco {
+    width: 150px; /* Define uma largura fixa */
+    padding: 5px; /* Ajusta o espaçamento interno */
+    font-size: 16px; /* Define o tamanho da fonte */
+    border: 1px solid #ccc; /* Define a borda */
+    border-radius: 5px; /* Adiciona bordas arredondadas */
+    box-sizing: border-box; /* Garante que o padding não aumente a largura total */
+    text-align: right; /* Alinha o texto à direita */
+    direction: rtl; /* Alinha números à direita mantendo o R$ à esquerda */
+    padding-right: 25px; /* Espaço para o símbolo */
+}
+
+/* Estilo para os links de download no histórico */
+#historico-lista a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+}
+
+#historico-lista a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para as informações adicionais no histórico */
+#historico-lista li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Estilo para a tabela de estoque */
+#estoque-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+#estoque-tabela th, #estoque-tabela td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#estoque-tabela th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}

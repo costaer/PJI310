@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilo para as abas */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 2px solid #007BFF;
+            margin-bottom: 20px;
+            background-color: #007BFF;
+            padding: 10px 0;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: #007BFF;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tab-button:hover {
+            background-color: #0056b3;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #007BFF;
+            border-bottom: 2px solid white;
+            font-weight: bold;
+        }
+
+        /* Estilo para o conteúdo das abas */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Cesta Básica RB Alimentos - Controle de Estoque</h1>
+</header>
+    <main>
+        <div class="tabs">
+            <button class="tab-button" data-tab="cadastrar-produto">Cadastrar Produto</button>
+            <button class="tab-button" data-tab="montar-cesta">Montar Cesta</button>
+            <button class="tab-button" data-tab="visualizar-estoque">Visualizar Estoque</button>
+            <button class="tab-button" data-tab="historico-cestas">Histórico de Cestas</button>
+        </div>
+
+        <div class="tab-content" id="cadastrar-produto">
+            <h2>Cadastrar Produto</h2>
+            <form id="cadastrar-produto-form">
+                <div>
+                    <label for="produto-nome">Nome do Produto:</label>
+                    <select id="produto-nome" required>
+                        <option value="">Selecione um produto</option>
+                        <option value="Arroz">Arroz</option>
+                        <option value="Feijão">Feijão</option>
+                        <option value="Óleo">Óleo</option>
+                        <option value="Açúcar">Açúcar</option>
+                        <option value="Café moído">Café moído</option>
+                        <option value="Sal">Sal</option>
+                        <option value="Extrato de tomate">Extrato de tomate</option>
+                        <option value="Vinagre">Vinagre</option>
+                        <option value="Bolacha recheada">Bolacha recheada</option>
+                        <option value="Bolacha salgada">Bolacha salgada</option>
+                        <option value="Macarrão Espaguete">Macarrão Espaguete</option>
+                        <option value="Macarrão parafuso">Macarrão parafuso</option>
+                        <option value="Macarrão instantâneo">Macarrão instantâneo</option>
+                        <option value="Farinha de trigo">Farinha de trigo</option>
+                        <option value="Farinha temperada">Farinha temperada</option>
+                        <option value="Achocolatado em pó">Achocolatado em pó</option>
+                        <option value="Leite">Leite</option>
+                        <option value="Goiabada">Goiabada</option>
+                        <option value="Suco em pó">Suco em pó</option>
+                        <option value="Mistura para bolo">Mistura para bolo</option>
+                        <option value="Tempero">Tempero</option>
+                        <option value="Sardinha">Sardinha</option>
+                        <option value="Creme dental">Creme dental</option>
+                        <option value="Papel higiênico">Papel higiênico</option>
+                        <option value="Sabonete">Sabonete</option>
+                        <option value="Milharina">Milharina</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="produto-quantidade">Quantidade:</label>
+                    <input type="number" id="produto-quantidade" required min="1">
+                </div>
+
+                <div>
+                    <label for="produto-data-compra">Data de Compra:</label>
+                    <input type="date" id="produto-data-compra" required>
+                </div>
+
+                <div>
+                    <label for="produto-data-validade">Data de Validade:</label>
+                    <input type="date" id="produto-data-validade" required>
+                </div>
+
+                <div>
+                    <label for="produto-preco">Preço:</label>
+                    <input type="text" id="produto-preco" placeholder="R$ 0,00" />
+                </div>
+
+                <button type="submit">Cadastrar Produto</button>
+            </form>
+        </div>
+
+        <div class="tab-content" id="montar-cesta">
+            <h2>Montar Cesta</h2>
+            <form id="montar-cesta-form">
+                <div>
+                    <label for="tipo-cesta">Tipo de Cesta:</label>
+                    <input type="radio" name="tipo-cesta" value="pequena" required> Pequena
+                    <input type="radio" name="tipo-cesta" value="grande" required> Grande
+                </div>
+                <button type="submit">Montar Cesta</button>
+            </form>
+        </div>
+
+        <div class="tab-content" id="visualizar-estoque">
+            <h2>Visualizar Estoque</h2>
+            <table id="estoque-tabela">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Data de Compra</th>
+                        <th>Data de Validade</th>
+                        <th>Preço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Os itens do estoque serão inseridos aqui dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-content" id="historico-cestas">
+            <h2>Histórico de Cestas</h2>
+            <ul id="historico-lista"></ul>
+        </div>
+    </main>
+
+    <script>
+        function cadastrarProduto(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('produto-nome').value;
+            const quantidade = document.getElementById('produto-quantidade').value;
+            const dataCompra = document.getElementById('produto-data-compra').value;
+            const dataValidade = document.getElementById('produto-data-validade').value;
+            const preco = document.getElementById('produto-preco').value;
+
+            // Gera um código único para o produto
+            const codigo = `${nome}-${dataCompra}-${dataValidade}-${preco}`;
+
+            fetch('/api/produtos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome, quantidade, dataCompra, dataValidade, preco, codigo })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Produto cadastrado com sucesso!');
+                document.getElementById('cadastrar-produto-form').reset();
+                visualizarEstoque(); // Atualiza a lista de estoque automaticamente
+            })
+            .catch(error => console.error('Erro ao cadastrar produto:', error));
+        }
+
+        document.getElementById('cadastrar-produto-form').addEventListener('submit', cadastrarProduto);
+
+        // Código para alternar entre as abas e carregar dados dinamicamente
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    const activeTab = document.getElementById(tabId);
+                    activeTab.classList.add('active');
+
+                    if (tabId === 'visualizar-estoque') {
+                        visualizarEstoque();
+                    } else if (tabId === 'historico-cestas') {
+                        acessarHistorico();
+                    }
+                });
+            });
+
+            tabButtons[0].classList.add('active');
+            tabContents[0].classList.add('active');
+        });
+
+        // Funções para carregar dados dinamicamente
+        function visualizarEstoque() {
+            fetch('/api/estoque')
+            .then(response => response.json())
+            .then(data => {
+                const tabela = document.getElementById('estoque-tabela').querySelector('tbody');
+                tabela.innerHTML = '';
+                data.forEach(produto => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${produto.codigo}</td>
+                        <td>${produto.nome}</td>
+                        <td>${produto.quantidade}</td>
+                        <td>${produto.data_compra}</td>
+                        <td>${produto.data_validade}</td>
+                        <td>R$ ${produto.preco}</td>
+                    `;
+                    tabela.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Erro ao visualizar estoque:', error));
+        }
+
+        function acessarHistorico() {
+            fetch('/api/historico')
+            .then(response => response.json())
+            .then(data => {
+                const lista = document.getElementById('historico-lista');
+                lista.innerHTML = '';
+                data.forEach(cesta => {
+                    const item = document.createElement('li');
+                    item.textContent = `Cesta ID: ${cesta.id} - Tipo: ${cesta.tipo} - Data: ${cesta.data}`;
+                    lista.appendChild(item);
+                });
+            })
+            .catch(error => console.error('Erro ao acessar histórico:', error));
+        }
+    </script>
+</body>
+</html>
