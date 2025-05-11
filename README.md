@@ -22,16 +22,23 @@ Este projeto é uma aplicação web para controle de estoque de cestas básicas.
 ```
 estoque-cestas
 ├── public
-│   ├── index.html        # Estrutura HTML da aplicação
-│   ├── style.css        # Estilos CSS da aplicação
-│   └── script.js        # Lógica JavaScript da aplicação
+│   ├── index.html         # Estrutura HTML da aplicação
+│   ├── style.css          # Estilos CSS da aplicação
+│   └── script.js          # Lógica JavaScript da aplicação
 ├── database
-│   └── database.sqlite   # Banco de dados SQLite
+│   └── database.sqlite    # Banco de dados SQLite
 ├── server
-│   ├── server.js        # Ponto de entrada do servidor
-│   └── routes.js        # Definição das rotas da aplicação
-├── package.json          # Configuração do npm
-└── README.md             # Documentação do projeto
+│   ├── server.js          # Ponto de entrada do servidor
+│   ├── routes.js          # Definição das rotas da aplicação
+│   └── database.js        # Configuração e conexão com o banco de dados
+├── logs
+│   └── app.log            # Arquivo de log para registrar eventos do sistema
+├── tests
+│   ├── test_routes.js     # Testes para as rotas da aplicação
+│   └── test_database.js   # Testes para o banco de dados
+├── package.json           # Configuração do npm
+├── package-lock.json      # Detalhes das dependências instaladas
+└── README.md              # Documentação do projeto
 ```
 
 ## Funcionalidades
