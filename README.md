@@ -88,29 +88,52 @@ estoque-cestas
 
 ---
 
-## Como instalar e rodar o projeto
+## Como hospedar no Render (deploy gratuito na nuvem)
 
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd estoque-cestas
-   ```
+Você pode rodar este sistema online gratuitamente usando o serviço [Render](https://render.com/). Siga os passos abaixo:
 
-2. **Instale as dependências:**
-   ```bash
-   npm install
-   ```
+1. **Crie uma conta no Render:**  
+   Acesse [https://render.com/](https://render.com/) e faça login ou crie uma conta gratuita.
 
-3. **Inicie o servidor:**
-   ```bash
-   node server/server.js
-   ```
+2. **Crie um novo Web Service:**  
+   - No painel do Render, clique em **"New +"** e depois em **"Web Service"**.
+   - Escolha conectar seu repositório do GitHub ou cole a URL do seu repositório.
 
-4. **Acesse no navegador:**
-   ```
-   http://localhost:3000
-   ```
+3. **Configure o Root Directory:**  
+   - Se o seu projeto está dentro de uma subpasta (ex: `estoque-cestas`), preencha o campo **Root Directory** com `estoque-cestas`.
+   - Se o projeto está na raiz, deixe em branco.
+
+4. **Configure os comandos:**
+   - **Build Command:**  
+     ```
+     npm install
+     ```
+   - **Start Command:**  
+     ```
+     npm start
+     ```
+     ou  
+     ```
+     node server/server.js
+     ```
+
+5. **(Opcional) Configure variáveis de ambiente:**  
+   - Não é obrigatório, mas se quiser garantir que a porta será 3000, adicione:
+     - **Name:** `PORT`
+     - **Value:** `3000`
+   - O Render geralmente define isso automaticamente.
+
+6. **Crie o serviço e aguarde o deploy:**  
+   O Render irá instalar as dependências, rodar o servidor e gerar um link público para acessar sua aplicação.
+
+7. **Acesse sua aplicação:**  
+   - O link estará disponível no painel do Render, algo como:  
+     ```
+     https://nome-do-seu-app.onrender.com
+     ```
+   - Pronto! Seu sistema estará online.
 
 ---
 
-Esses passos garantem que qualquer pessoa consiga rodar o sistema localmente usando apenas o Node.js e o npm.
+**Observação:**  
+No plano gratuito, o banco de dados SQLite pode ser apagado se o serviço for reiniciado. Para uso profissional, considere migrar para um banco de dados online (PostgreSQL, por exemplo).
