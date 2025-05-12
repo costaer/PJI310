@@ -88,4 +88,29 @@ estoque-cestas
 
 ---
 
-Essas funcionalidades garantem o controle eficiente do estoque, a rastreabilidade das cestas montadas e a facilidade de uso para o usuário final.
+## Como instalar e rodar o projeto
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/seu-usuario/seu-repositorio.git
+   cd estoque-cestas
+   ```
+
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
+
+3. **Inicie o servidor:**
+   ```bash
+   node server/server.js
+   ```
+
+4. **Acesse no navegador:**
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+Esses passos garantem que qualquer pessoa consiga rodar o sistema localmente usando apenas o Node.js e o npm.
